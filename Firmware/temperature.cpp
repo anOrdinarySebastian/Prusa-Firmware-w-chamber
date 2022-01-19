@@ -69,8 +69,8 @@ float current_temperature_ambient = 0.0;
 #endif //AMBIENT_THERMISTOR
 
 #ifdef CHAMBER_THERMISTOR
-int current_temperature_raw_ambient = 0;
-float current_temperature_ambient = 0.0;
+int current_temperature_raw_chamber = 0;
+float current_temperature_chamber = 0.0;
 #endif //CHAMBER_THERMISTOR
 
 #ifdef VOLT_PWR_PIN
@@ -1054,7 +1054,7 @@ static void updateTemperaturesFromRawValues()
 #endif
 
 #ifdef CHAMBER_THERMISTOR
-	current_temperature_chamber = analog2temp(current_temperature_raw_ambient); //Same thermisotr as the hotend so this should work
+	current_temperature_chamber = analog2temp(current_temperature_raw_chamber,0); //Same thermisotr as the hotend so using 0 as extruder number should work
 #endif
 
 #ifdef DEBUG_HEATER_BED_SIM
@@ -1680,7 +1680,7 @@ void adc_ready(void) //callback from adc when sampling finished
 	current_temperature_raw_ambient = adc_values[ADC_PIN_IDX(TEMP_AMBIENT_PIN)]; // 5->6
 #endif //AMBIENT_THERMISTOR
 #ifdef CHAMBER_THERMISTOR
-	current_temperature_raw_chamber = adc_values[ADC_PIN_IDX(TEMP_CHAMBER_PIN)]; // 5->6
+	current_temperature_raw_chamber = adc_values[ADC_PIN_IDX(TEMP_1_PIN)];
 #endif //CHAMBER_THERMISTOR
 #ifdef VOLT_BED_PIN
 	current_voltage_raw_bed = adc_values[ADC_PIN_IDX(VOLT_BED_PIN)]; // 6->9
