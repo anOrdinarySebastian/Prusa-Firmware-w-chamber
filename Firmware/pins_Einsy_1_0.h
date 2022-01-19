@@ -14,6 +14,7 @@
 
 #define AMBIENT_THERMISTOR
 #define PINDA_THERMISTOR
+#define CHAMBER_THERMISTOR
 
 #define XFLASH                 // external 256kB flash
 #define BOOTAPP                  // bootloader support
@@ -62,7 +63,7 @@
 #define TEMP_0_PIN           0 //A0
 
 #define HEATER_1_PIN        -1
-#define TEMP_1_PIN           1 //A1
+#define TEMP_CHAMBER_PIN     1 //A1
 
 #define HEATER_2_PIN        -1
 #define TEMP_2_PIN          -1
@@ -113,7 +114,7 @@
 #define SDCARDDETECT           15
 
 #define TACH_0                 79 // !!! changed from 81 (EINY03)
-#define TACH_1                 80 
+#define TACH_1                 80
 
 #define IR_SENSOR_PIN 62 //idler sensor @PK0 (digital pin 62/A8)
 
@@ -154,4 +155,3 @@
 	/* Put data into buffer, sends the data */ \
 	LOGIC_ANALYZER_SERIAL_TX_WRITE_NC(C); \
 } while (0)
-
