@@ -19,7 +19,7 @@
 */
 
 #ifndef temperature_h
-#define temperature_h 
+#define temperature_h
 
 #include "Marlin.h"
 #include "planner.h"
@@ -51,7 +51,7 @@ extern bool checkAllHotends(void);
 
 // low level conversion routines
 // do not use these routines and variables outside of temperature.cpp
-extern int target_temperature[EXTRUDERS];  
+extern int target_temperature[EXTRUDERS];
 extern float current_temperature[EXTRUDERS];
 #ifdef SHOW_TEMP_ADC_VALUES
   extern int current_temperature_raw[EXTRUDERS];
@@ -59,6 +59,11 @@ extern float current_temperature[EXTRUDERS];
 #endif
 extern int target_temperature_bed;
 extern float current_temperature_bed;
+
+#ifdef CHAMBER_THERMISTOR
+extern int current_temperature_raw_chamber;
+extern float current_temperature_chamber;
+#endif
 
 #ifdef PINDA_THERMISTOR
 extern uint16_t current_temperature_raw_pinda;
@@ -121,18 +126,24 @@ void resetPID(uint8_t extruder);
 //deg=degreeCelsius
 
 // Doesn't save FLASH when FORCE_INLINE removed.
-FORCE_INLINE float degHotend(uint8_t extruder) {  
+FORCE_INLINE float degHotend(uint8_t extruder) {
   return current_temperature[extruder];
 };
 
 #ifdef SHOW_TEMP_ADC_VALUES
-  FORCE_INLINE float rawHotendTemp(uint8_t extruder) {  
+  FORCE_INLINE float rawHotendTemp(uint8_t extruder) {
     return current_temperature_raw[extruder];
   };
 
-  FORCE_INLINE float rawBedTemp() {  
+  FORCE_INLINE float rawBedTemp() {
     return current_temperature_bed_raw;
   };
+#endif
+
+#ifdef CHAMBER_THERMISTOR
+FORCE_INLINE float degChamber(){
+  return current_temperature_chamber;
+};
 #endif
 
 FORCE_INLINE float degBed() {
@@ -140,16 +151,16 @@ FORCE_INLINE float degBed() {
 };
 
 // Doesn't save FLASH when FORCE_INLINE removed.
-FORCE_INLINE float degTargetHotend(uint8_t extruder) {  
+FORCE_INLINE float degTargetHotend(uint8_t extruder) {
   return target_temperature[extruder];
 };
 
-FORCE_INLINE float degTargetBed() {   
+FORCE_INLINE float degTargetBed() {
   return target_temperature_bed;
 };
 
 // Doesn't save FLASH when FORCE_INLINE removed.
-FORCE_INLINE void setTargetHotend(const float &celsius, uint8_t extruder) {  
+FORCE_INLINE void setTargetHotend(const float &celsius, uint8_t extruder) {
   target_temperature[extruder] = celsius;
   resetPID(extruder);
 };
@@ -169,11 +180,11 @@ static inline void setAllTargetHotends(const float &celsius)
     for(int i=0;i<EXTRUDERS;i++) setTargetHotend(celsius,i);
 }
 
-FORCE_INLINE void setTargetBed(const float &celsius) {  
+FORCE_INLINE void setTargetBed(const float &celsius) {
   target_temperature_bed = celsius;
 };
 
-FORCE_INLINE bool isHeatingHotend(uint8_t extruder){  
+FORCE_INLINE bool isHeatingHotend(uint8_t extruder){
   return target_temperature[extruder] > current_temperature[extruder];
 };
 
@@ -181,7 +192,7 @@ FORCE_INLINE bool isHeatingBed() {
   return target_temperature_bed > current_temperature_bed;
 };
 
-FORCE_INLINE bool isCoolingHotend(uint8_t extruder) {  
+FORCE_INLINE bool isCoolingHotend(uint8_t extruder) {
   return target_temperature[extruder] < current_temperature[extruder];
 };
 
@@ -243,7 +254,7 @@ void checkExtruderAutoFans();
 
 #if (defined(FANCHECK) && defined(TACH_0) && (TACH_0 > -1))
 
-enum { 
+enum {
 	EFCE_OK = 0,   //!< normal operation, both fans are ok
 	EFCE_FIXED,    //!< previous fan error was fixed
 	EFCE_DETECTED, //!< fan error detected, but not reported yet
