@@ -69,6 +69,7 @@ float current_temperature_ambient = 0.0;
 #endif //AMBIENT_THERMISTOR
 
 #ifdef CHAMBER_THERMISTOR
+int target_temperature_chamber = 0;
 int current_temperature_raw_chamber = 0;
 float current_temperature_chamber = 0.0;
 #endif //CHAMBER_THERMISTOR

@@ -61,6 +61,7 @@ extern int target_temperature_bed;
 extern float current_temperature_bed;
 
 #ifdef CHAMBER_THERMISTOR
+extern int target_temperature_chamber;
 extern int current_temperature_raw_chamber;
 extern float current_temperature_chamber;
 #endif
@@ -159,6 +160,10 @@ FORCE_INLINE float degTargetBed() {
   return target_temperature_bed;
 };
 
+FORCE_INLINE float degTargetChamber() {
+  return target_temperature_chamber;
+};
+
 // Doesn't save FLASH when FORCE_INLINE removed.
 FORCE_INLINE void setTargetHotend(const float &celsius, uint8_t extruder) {
   target_temperature[extruder] = celsius;
@@ -182,6 +187,10 @@ static inline void setAllTargetHotends(const float &celsius)
 
 FORCE_INLINE void setTargetBed(const float &celsius) {
   target_temperature_bed = celsius;
+};
+
+FORCE_INLINE void setTargetChamber(const float &celsius){
+  target_temperature_chamber = celsius;
 };
 
 FORCE_INLINE bool isHeatingHotend(uint8_t extruder){

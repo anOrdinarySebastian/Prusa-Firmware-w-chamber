@@ -2679,11 +2679,12 @@ void gcode_M105(uint8_t extruder)
     SERIAL_PROTOCOL_F(degHotend(extruder),1);
     SERIAL_PROTOCOLPGM(" /");
     SERIAL_PROTOCOL_F(degTargetHotend(extruder),1);
-#if defined(TEMP_1_PIN) && TEMP_0_PIN > -1
-    SERIAL_PROTOCOLPGM("C:");
-    SERIAL_PROTOCOL_F(degHotend(extruder),1);
+#if defined(TEMP_1_PIN) && TEMP_1_PIN > -1
+    SERIAL_PROTOCOLPGM(" C:");
+    SERIAL_PROTOCOL_F(degChamber());
     SERIAL_PROTOCOLPGM(" /");
     SERIAL_PROTOCOL_F(degTargetHotend(extruder),1);
+#endif //TEMP_1_PIN
 #if defined(TEMP_BED_PIN) && TEMP_BED_PIN > -1
     SERIAL_PROTOCOLPGM(" B:");
     SERIAL_PROTOCOL_F(degBed(),1);
@@ -6588,6 +6589,20 @@ Sigma_Exit:
     */
     case 140:
       if (code_seen('S')) setTargetBed(code_value());
+      break;
+
+    /*!
+ ###  M141 - Set Chamber Temperature <a href="https://marlinfw.org/docs/gcode/M141.html">
+        Set a new target heated chamber temperature and continue without waiting
+        #### Usage
+
+	    M141 [ S ]
+
+	#### Parameters
+       - `S` - Target temperature
+    */
+    case 141:
+      if (code_seen('S')) setTargetChamber(code_value());
       break;
 
     /*!
