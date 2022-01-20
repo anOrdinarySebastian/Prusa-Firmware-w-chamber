@@ -2681,9 +2681,9 @@ void gcode_M105(uint8_t extruder)
     SERIAL_PROTOCOL_F(degTargetHotend(extruder),1);
 #if defined(TEMP_1_PIN) && TEMP_1_PIN > -1
     SERIAL_PROTOCOLPGM(" C:");
-    SERIAL_PROTOCOL_F(degChamber());
+    SERIAL_PROTOCOL_F(degChamber(),1);
     SERIAL_PROTOCOLPGM(" /");
-    SERIAL_PROTOCOL_F(degTargetHotend(extruder),1);
+    SERIAL_PROTOCOL_F(degTargetChamber(),1);
 #endif //TEMP_1_PIN
 #if defined(TEMP_BED_PIN) && TEMP_BED_PIN > -1
     SERIAL_PROTOCOLPGM(" B:");
